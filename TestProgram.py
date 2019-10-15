@@ -61,5 +61,6 @@ while userInput != "q":
         vy = vy*-1
     if collision[1]==1:
         vx = vx*-1
-    moveObject(obj,x=0,y=0,vx=0,vy=0)
-    
+    moveObject(obj,x,y,vx,vy)
+    x=x+vx
+    y=y+vy
