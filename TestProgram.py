@@ -1,7 +1,8 @@
-choiceInt = 0
 from gfxhat import lcd
 from click import getchar
 from reyn0149Library import eraseObject, checkCollision, moveObject
+
+choiceInt = 0
 userInput = ""
 collision =[0,0]
 ball =  [
@@ -32,10 +33,12 @@ while choiceInt == 0:
 
     if choiceInt ==1:
         import random
-        x = random.randint(1,127)
-        y = random.randint(1,63)
-        vx = random.randint(1,5)
-        vy = random.randint(1,5)
+        x = random.randint(40,60)
+        y = random.randint(20,40)
+        vx = random.randint(1,2)
+        vy = random.randint(1,2)
+        Sx = 128
+        Sy = 64
         obj = ball
     elif choiceInt ==2:
         x = input("What should the starting x value be?")
@@ -44,17 +47,22 @@ while choiceInt == 0:
         vy = input("What should the initial y velocity be?")
         Sx = input("How wide is your screen in pixels? (Default is 128)")
         Sy = input("How tall is your screen in pixels? (Default is 64)")
+        if x > Sx:
+            x = 0
+        if y > Sy:
+            y = 0
         obj = ball
     else:
         print("Sorry! That's not a recognized choice! \n")
         choiceInt = 0
 #Start of the bouncing ball program
-lcd.clear
+lcd.clear()
 print("Here's your bouncing ball!")
-print("If you'd like to quit, please press q on your keyboard")
+print("Press Control + C to quit")
 
+#Infinite loop (I wanted to try non-blocking inputs but I 
+#Didn't want to make my program OS specific)
 while userInput != "q":
-    userInput = getchar()
     eraseObject(obj,x,y)
     collision = checkCollision(obj,x,y,vx,vy,Sx,Sy)
     if collision[0]==1:
@@ -62,5 +70,6 @@ while userInput != "q":
     if collision[1]==1:
         vx = vx*-1
     moveObject(obj,x,y,vx,vy)
+    lcd.show()
     x=x+vx
     y=y+vy
